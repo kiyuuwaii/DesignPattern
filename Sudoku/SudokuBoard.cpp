@@ -115,7 +115,7 @@ void SudokuBoard::generate()
             }
         }
     }
-    for (int i = 0; i < 41; ++i)
+    for (int i = 0; i < 81; ++i)
     {
         int row = rand() % 9;
         int col = rand() % 9;
