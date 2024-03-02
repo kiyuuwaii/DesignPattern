@@ -1,6 +1,8 @@
 #include "SudokuBoard.h"
+#include <vector>
 #include <cstdlib>
 #include <ctime>
+#include <algorithm>
 
 SudokuBoard::SudokuBoard()
 {
@@ -101,8 +103,20 @@ void SudokuBoard::generate()
 {
     srand(time(nullptr));
     solve(); // Solve an empty board
-    for (int i = 0; i < 81 * 0.4; ++i)
-    { // Randomly remove 40% of the numbers
+    std::vector<int> nums = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    for (int i = 0; i < 9; ++i)
+    {
+        std::random_shuffle(nums.begin(), nums.end());
+        for (int j = 0; j < 9; ++j)
+        {
+            if (!board[i][j].isFixed())
+            {
+                board[i][j].setValue(nums[j]);
+            }
+        }
+    }
+    for (int i = 0; i < 41; ++i)
+    {
         int row = rand() % 9;
         int col = rand() % 9;
         if (!board[row][col].isFixed())
