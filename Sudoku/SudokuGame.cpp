@@ -3,9 +3,9 @@
 
 SudokuGame::SudokuGame() {}
 
-void SudokuGame::initialize()
+void SudokuGame::initialize(int difficulty)
 {
-    board.generate();
+    board.generate(difficulty);
 }
 
 void SudokuGame::printBoard() const

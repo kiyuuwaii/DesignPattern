@@ -10,7 +10,7 @@ private:
 
 public:
     SudokuGame();
-    void initialize();
+    void initialize(int difficulty);
     void printBoard() const;
     bool insertNumber(int row, int col, int num);
     bool removeNumber(int row, int col);

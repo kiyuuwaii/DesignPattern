@@ -1,5 +1,4 @@
 #include "SudokuBoard.h"
-#include <vector>
 #include <cstdlib>
 #include <ctime>
 #include <algorithm>
@@ -101,21 +100,44 @@ bool SudokuBoard::solve()
 
 void SudokuBoard::generate()
 {
+    // Generate an empty board
+    solve();
+    // Randomly remove cells to create the puzzle
     srand(time(nullptr));
-    solve(); // Solve an empty board
-    std::vector<int> nums = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-    for (int i = 0; i < 9; ++i)
+    for (int i = 0; i < 81; ++i)
     {
-        std::random_shuffle(nums.begin(), nums.end());
-        for (int j = 0; j < 9; ++j)
+        int row = rand() % 9;
+        int col = rand() % 9;
+        if (!board[row][col].isFixed())
         {
-            if (!board[i][j].isFixed())
-            {
-                board[i][j].setValue(nums[j]);
-            }
+            board[row][col].setValue(0);
         }
     }
-    for (int i = 0; i < 81; ++i)
+}
+
+void SudokuBoard::generate(int difficulty)
+{
+    // Generate an empty board
+    solve();
+    // Randomly remove cells based on difficulty
+    srand(time(nullptr));
+    int cellsToRemove = 0;
+    switch (difficulty)
+    {
+    case Difficulty::EASY:
+        cellsToRemove = 40;
+        break;
+    case Difficulty::MEDIUM:
+        cellsToRemove = 50;
+        break;
+    case Difficulty::HARD:
+        cellsToRemove = 60;
+        break;
+    default:
+        cellsToRemove = 40;
+        break;
+    }
+    for (int i = 0; i < cellsToRemove; ++i)
     {
         int row = rand() % 9;
         int col = rand() % 9;
