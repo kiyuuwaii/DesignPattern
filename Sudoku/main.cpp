@@ -1,7 +1,6 @@
 #include <iostream>
 #include "SudokuGame.h"
 #include "Player.h"
-#include "Difficulty.h"
 
 int main()
 {
@@ -16,27 +15,27 @@ int main()
     std::cout << "Enter your choice (1-3): ";
     std::cin >> difficultyChoice;
 
-    // Inisialisasi permainan dengan tingkat kesulitan yang dipilih
+    Difficulty difficulty;
     switch (difficultyChoice)
     {
-    case Difficulty::EASY:
-        game.initialize(Difficulty::EASY);
+    case 1:
+        difficulty = Difficulty::EASY;
         break;
-    case Difficulty::MEDIUM:
-        game.initialize(Difficulty::MEDIUM);
+    case 2:
+        difficulty = Difficulty::MEDIUM;
         break;
-    case Difficulty::HARD:
-        game.initialize(Difficulty::HARD);
+    case 3:
+        difficulty = Difficulty::HARD;
         break;
     default:
         std::cout << "Invalid choice. Generating an easy Sudoku board by default." << std::endl;
-        game.initialize(Difficulty::EASY);
+        difficulty = Difficulty::EASY;
         break;
     }
 
+    game.initialize(difficulty);
     game.printBoard();
 
-    // Memulai permainan
     while (!game.isGameOver())
     {
         int choice;
@@ -47,7 +46,6 @@ int main()
 
         if (choice == 1)
         {
-            // Meminta pemain untuk membuat langkah
             int move = player.makeMove(game.getBoard());
             if (move != -1)
             {
@@ -71,7 +69,6 @@ int main()
         }
         else if (choice == 2)
         {
-            // Meminta pemain untuk menghapus nomor
             int move = player.removeNumber();
             int row = move / 10;
             int col = move % 10;

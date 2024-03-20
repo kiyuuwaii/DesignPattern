@@ -3,7 +3,7 @@
 
 SudokuGame::SudokuGame() {}
 
-void SudokuGame::initialize(int difficulty)
+void SudokuGame::initialize(Difficulty difficulty)
 {
     board.generate(difficulty);
 }

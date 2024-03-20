@@ -1,4 +1,5 @@
 #include "SudokuBoard.h"
+#include <fstream>
 #include <cstdlib>
 #include <ctime>
 #include <algorithm>
@@ -98,46 +99,37 @@ bool SudokuBoard::solve()
     return true;
 }
 
-void SudokuBoard::generate()
+void SudokuBoard::generate(Difficulty difficulty)
 {
-    // Generate an empty board
-    solve();
-    // Randomly remove cells to create the puzzle
-    srand(time(nullptr));
-    for (int i = 0; i < 81; ++i)
+    // Load template from file.txt
+    std::vector<std::vector<int>> templateSudoku = DifficultyManager::loadTemplate(difficulty);
+
+    // Copy template to the board
+    for (int i = 0; i < 9; ++i)
     {
-        int row = rand() % 9;
-        int col = rand() % 9;
-        if (!board[row][col].isFixed())
+        for (int j = 0; j < 9; ++j)
         {
-            board[row][col].setValue(0);
+            board[i][j].setValue(templateSudoku[i][j]);
+            board[i][j].setFixed(true); // Mark template cells as fixed
         }
     }
-}
 
-void SudokuBoard::generate(int difficulty)
-{
-    // Generate an empty board
-    solve();
-    // Randomly remove cells based on difficulty
-    srand(time(nullptr));
-    int cellsToRemove = 0;
-    switch (difficulty)
+    // Randomize numbers for non-fixed cells
+    std::vector<int> nums = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    for (int i = 0; i < 9; ++i)
     {
-    case Difficulty::EASY:
-        cellsToRemove = 40;
-        break;
-    case Difficulty::MEDIUM:
-        cellsToRemove = 50;
-        break;
-    case Difficulty::HARD:
-        cellsToRemove = 60;
-        break;
-    default:
-        cellsToRemove = 40;
-        break;
+        std::random_shuffle(nums.begin(), nums.end());
+        for (int j = 0; j < 9; ++j)
+        {
+            if (!board[i][j].isFixed())
+            {
+                board[i][j].setValue(nums[j]);
+            }
+        }
     }
-    for (int i = 0; i < cellsToRemove; ++i)
+
+    // Randomly remove numbers to create puzzle
+    for (int i = 0; i < 81; ++i)
     {
         int row = rand() % 9;
         int col = rand() % 9;
@@ -170,6 +162,7 @@ void SudokuBoard::reset()
         for (int j = 0; j < 9; ++j)
         {
             board[i][j].setValue(0);
+            board[i][j].setFixed(false);
         }
     }
 }

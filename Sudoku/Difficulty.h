@@ -1,12 +1,24 @@
 #ifndef DIFFICULTY_H
 #define DIFFICULTY_H
 
-class Difficulty
+#include <vector>
+#include <string>
+
+enum class Difficulty
 {
-public:
-    static const int EASY = 1;
-    static const int MEDIUM = 2;
-    static const int HARD = 3;
+    EASY,
+    MEDIUM,
+    HARD
 };
 
-#endif
+class DifficultyManager
+{
+public:
+    static std::vector<std::vector<int>> loadTemplate(Difficulty difficulty);
+
+private:
+    static std::vector<std::vector<int>> loadTemplateFromFile(const std::string &filename);
+    static void randomizePuzzle(std::vector<std::vector<int>> &puzzle);
+};
+
+#endif // DIFFICULTY_H
