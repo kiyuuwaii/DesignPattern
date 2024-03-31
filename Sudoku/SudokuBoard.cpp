@@ -109,33 +109,18 @@ void SudokuBoard::generate(Difficulty difficulty)
     {
         for (int j = 0; j < 9; ++j)
         {
-            board[i][j].setValue(templateSudoku[i][j]);
-            board[i][j].setFixed(true); // Mark template cells as fixed
-        }
-    }
+            int templateValue = templateSudoku[i][j];
+            board[i][j].setValue(templateValue);
 
-    // Randomize numbers for non-fixed cells
-    std::vector<int> nums = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-    for (int i = 0; i < 9; ++i)
-    {
-        std::random_shuffle(nums.begin(), nums.end());
-        for (int j = 0; j < 9; ++j)
-        {
-            if (!board[i][j].isFixed())
+            // Mark template cells with value 0 as non-fixed
+            if (templateValue != 0)
             {
-                board[i][j].setValue(nums[j]);
+                board[i][j].setFixed(true);
             }
-        }
-    }
-
-    // Randomly remove numbers to create puzzle
-    for (int i = 0; i < 81; ++i)
-    {
-        int row = rand() % 9;
-        int col = rand() % 9;
-        if (!board[row][col].isFixed())
-        {
-            board[row][col].setValue(0);
+            else
+            {
+                board[i][j].setFixed(false); // Mark template cells with value 0 as non-fixed
+            }
         }
     }
 }

@@ -37,7 +37,7 @@ void SudokuGame::printBoard() const
 
 bool SudokuGame::insertNumber(int row, int col, int num)
 {
-    if (row >= 0 && row < 9 && col >= 0 && col < 9 && num >= 0 && num <= 9)
+    if (row >= 0 && row < 9 && col >= 0 && col < 9 && num >= 1 && num <= 9)
     {
         if (!board.isFixed(row, col) && board.getValue(row, col) == 0)
         {

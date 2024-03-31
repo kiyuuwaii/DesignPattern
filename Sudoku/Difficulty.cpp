@@ -20,6 +20,7 @@ std::vector<std::vector<int>> DifficultyManager::loadTemplate(Difficulty difficu
         filename = "hard_template.txt";
         break;
     }
+
     return loadTemplateFromFile(filename);
 }
 
@@ -32,6 +33,9 @@ std::vector<std::vector<int>> DifficultyManager::loadTemplateFromFile(const std:
         return {};
     }
 
+    std::vector<std::vector<int>> grid1;
+    std::vector<std::vector<int>> grid2;
+    bool isGrid1 = true;
     std::vector<std::vector<int>> templateSudoku;
     std::string line;
     while (std::getline(file, line))
@@ -59,31 +63,42 @@ std::vector<std::vector<int>> DifficultyManager::loadTemplateFromFile(const std:
         templateSudoku.push_back(row);
     }
     file.close();
+    srand(time(nullptr));
+
+    int choice = rand() % 2; // Generate random number 0 or 1
+    if (choice == 0)
+    {
+        templateSudoku = grid1;
+    }
+    else
+    {
+        templateSudoku = grid2;
+    }
     return templateSudoku;
 }
 
-void DifficultyManager::randomizePuzzle(std::vector<std::vector<int>> &templateSudoku)
-{
-    srand(time(nullptr));
+// void DifficultyManager::randomizePuzzle(std::vector<std::vector<int>> &templateSudoku)
+// {
+//     srand(time(nullptr));
 
-    // Randomize each row
-    for (std::vector<int> &row : templateSudoku)
-    {
-        std::random_shuffle(row.begin(), row.end());
-    }
+//     // Randomize each row
+//     for (std::vector<int> &row : templateSudoku)
+//     {
+//         std::random_shuffle(row.begin(), row.end());
+//     }
 
-    // Randomize each column
-    for (size_t i = 0; i < templateSudoku.size(); ++i)
-    {
-        std::vector<int> col;
-        for (size_t j = 0; j < templateSudoku[i].size(); ++j)
-        {
-            col.push_back(templateSudoku[j][i]);
-        }
-        std::random_shuffle(col.begin(), col.end());
-        for (size_t j = 0; j < templateSudoku[i].size(); ++j)
-        {
-            templateSudoku[j][i] = col[j];
-        }
-    }
-}
+//     // Randomize each column
+//     for (size_t i = 0; i < templateSudoku.size(); ++i)
+//     {
+//         std::vector<int> col;
+//         for (size_t j = 0; j < templateSudoku[i].size(); ++j)
+//         {
+//             col.push_back(templateSudoku[j][i]);
+//         }
+//         std::random_shuffle(col.begin(), col.end());
+//         for (size_t j = 0; j < templateSudoku[i].size(); ++j)
+//         {
+//             templateSudoku[j][i] = col[j];
+//         }
+//     }
+// }
